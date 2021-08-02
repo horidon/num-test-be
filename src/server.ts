@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import express from 'express'
+import cors from 'cors'
 import { graphqlHTTP } from 'express-graphql'
 import { buildSchema } from 'graphql'
 import { T9Search } from 't9-plus'
@@ -21,7 +22,7 @@ const getWords = (args: IArgs) => {
 
   const prediction = t9.predict(num)
 
-  return prediction.map(p => ({ word: p }))
+  return prediction.map(p => ({ word: p })).slice(0, 20)
 }
 
 const getMatch = (args: IArgs) => {
@@ -30,7 +31,7 @@ const getMatch = (args: IArgs) => {
   const res = Utils.productNumbers(num)
   if(!res) return { match: [] }
 
-  return { match: res.map(r => r.join('')) }
+  return { match: res.map(r => r?.join('')) }
 }
 
 const bootstrap = () => {
@@ -53,6 +54,8 @@ const bootstrap = () => {
   }
 
   const app = express()
+
+  app.use(cors({ origin: '*' }))
   app.use('/graphql', graphqlHTTP({
     schema: schema,
     rootValue: root,
