@@ -2,7 +2,8 @@
   "scripts": {
     "build": "tsc --build --verbose",
     "watch": "nodemon -e ts -w ./src -x yarn watch:serve",
-    "watch:serve": "ts-node src/server.ts"
+    "watch:serve": "ts-node src/server.ts",
+    "serve": "node dist/server.js"
   },
   "dependencies": {
     "an-array-of-english-words": "^2.0.0",
